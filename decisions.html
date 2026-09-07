@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decisions — salvage project</title>
+<link rel="stylesheet" href="assets/site.css">
+</head><body>
+<header class="site"><div class="wrap" style="padding-bottom:0">
+<div class="name">salvage project / documentation</div>
+<nav class="site">
+<a href="index.html">status</a>
+<a href="pitch.html">pitch</a>
+<a href="prototype.html">prototype</a>
+<a href="decisions.html" aria-current="page">decisions</a>
+</nav></div></header>
+<div class="wrap">
+<h1>Decision log</h1>
+<p class="sub">What was decided and why. Read this before reopening an argument with yourself.</p>
+
+<section>
+<h2>Settled</h2>
+<table>
+<tr><th>Decision</th><th>Reason</th></tr>
+<tr><td>Not voxel</td><td>Minecraft's appeal is persistence and self-set goals, not blocks.</td></tr>
+<tr><td>No wipes or runs</td><td>The whole reason the genre didn't fit. Most indie survival is run-based because it's cheaper.</td></tr>
+<tr><td>Fixed terrain, procedural loot</td><td>Route planning is only a decision if distances are knowable. Random terrain makes it a reaction.</td></tr>
+<tr><td>Vessel is fictional, not a real vehicle</td><td>No drivetrain knowledge required. Invented parts, authored failure rules.</td></tr>
+<tr><td>Spoilage and cold chain as the core</td><td>Drawn from actual dietary work. Nothing in the genre models it.</td></tr>
+<tr><td>Cooler degrades, not random failure</td><td>Visible decline reads as dread. A surprise roll reads as unfair.</td></tr>
+<tr><td>Fuel competes with cargo for hold space</td><td>Turns route length into a cost you pay in the thing you drove out to get.</td></tr>
+<tr><td>Jerry cans sold at Home</td><td>If reaching the best location depends on a loot roll, players get stranded by luck. That's the version people hate.</td></tr>
+<tr><td>Upgrades carry between runs</td><td>Opens the far map by earning it instead of by tuning a constant.</td></tr>
+<tr><td>Prototype in C#, text only</td><td>Inventory, timers, quantities, state. Same software already written before. Not an engine problem.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Corrected after checking the math</h2>
+<p class="note">All 1,956 routes were enumerated. Two things in the first draft did nothing.</p>
+<table>
+<tr><th>Was</th><th>Now</th><th>Why</th></tr>
+<tr><td>Cold life 90–120h</td><td>10–18h</td><td>No route exceeds 24h, so spoilage never fired and the cooler was decorative.</td></tr>
+<tr><td>Unlimited stock per location</td><td>6–8 bulk each</td><td>One good stop filled the hold. No second stop was ever worth making.</td></tr>
+<tr><td>Tank 22 with F reachable</td><td>Tank 22, F needs an upgrade</td><td>Home to F and back is 24h. It was never reachable. Now that's intentional.</td></tr>
+</table>
+<div class="warn">Don't raise cold life without rechecking it against the distance table, and don't change stock without checking that the score curve across stops still flattens.</div>
+</section>
+
+<section>
+<h2>Deliberately not built yet</h2>
+<table>
+<tr><th>Idea</th><th>Why it waits</th></tr>
+<tr><td>Site exposure / radiation budget</td><td>Good mechanic, same decision at a smaller scale. But it makes four clocks and three is already a lot for an untested prototype.</td></tr>
+<tr><td>Uncertainty about whether an item is spoiled</td><td>Tests a different question than the one on the front page.</td></tr>
+<tr><td>Driving as an activity</td><td>Content, not a question. Weeks of work testing nothing uncertain.</td></tr>
+<tr><td>Repair minigame</td><td>Same. Repair stays a menu choice.</td></tr>
+<tr><td>3D, terrain, art, combat, story</td><td>All of it is more fun to build than the thing being tested. That's the warning sign, not the reason.</td></tr>
+</table>
+</section>
+
+<section>
+<h2>Open</h2>
+<ul class="no" style="list-style:none">
+<li>The title</li>
+<li>The era and setting</li>
+<li>Whether fixed terrain runs exploration dry, and how fast</li>
+</ul>
+</section>
+<footer class="site">Working documentation. Nothing here is final.</footer>
+</div></body></html>
