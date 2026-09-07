@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototype — salvage project</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.planner{background:var(--panel);border:1.5px solid var(--rule);border-radius:2px;padding:14px}
+.pick{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pick button{font-family:var(--mono);font-size:13px;padding:7px 11px;background:var(--paper);
+  color:var(--ink);border:1.5px solid var(--rule);border-radius:2px;cursor:pointer}
+.pick button:hover{border-color:var(--ink)}
+.pick button:disabled{opacity:.32;cursor:default}
+.pick button:focus-visible{outline:2px solid var(--cold);outline-offset:1px}
+.pick .clear{margin-left:auto;color:var(--soft);border-style:dashed}
+.route{font-family:var(--mono);font-size:15px;padding:9px 0;border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);margin-bottom:12px;word-break:break-word}
+.route .empty{color:var(--soft);font-size:13px}
+.readouts{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule);
+  border:1px solid var(--rule);margin-bottom:13px}
+.ro{background:var(--panel);padding:8px 7px;text-align:center}
+.ro .v{font-family:var(--mono);font-size:17px;line-height:1.2}
+.ro .k{font-size:10.5px;color:var(--soft);margin-top:2px}
+.ro.bad .v{color:var(--spoil)} .ro.good .v{color:var(--safe)}
+.tag{font-family:var(--mono);font-size:11px;padding:1px 5px;border-radius:2px;white-space:nowrap}
+.t-cold{background:#DCE7EA;color:var(--cold)}
+.t-warm{background:#E4E7DC;color:var(--safe)}
+.t-gone{background:#EFDDD5;color:var(--spoil)}
+.phase{margin-bottom:15px}
+.logrow{display:flex;gap:8px;align-items:center;padding:4px 0;border-bottom:1px solid var(--rule)}
+.logrow .num{font-family:var(--mono);font-size:12px;color:var(--soft);width:20px;flex:none}
+.logrow input[type=text]{flex:1;min-width:0;border:none;background:transparent;
+  font-family:var(--sans);font-size:14px;color:var(--ink);padding:5px 2px}
+.logrow input[type=text]:focus{outline:none;background:var(--panel)}
+.logrow input.sc{width:52px;flex:none;text-align:right;font-family:var(--mono);font-size:13px}
+@media (max-width:420px){.readouts{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head><body>
+<header class="site"><div class="wrap" style="padding-bottom:0">
+<div class="name">salvage project / documentation</div>
+<nav class="site">
+<a href="index.html">status</a>
+<a href="pitch.html">pitch</a>
+<a href="prototype.html" aria-current="page">prototype</a>
+<a href="decisions.html">decisions</a>
+</nav></div></header>
+
+<div class="wrap">
+<h1>Prototype worksheet</h1>
+<p class="sub">Numbers verified against all 1,956 possible routes. Checklist and log save in this browser.</p>
+
+<div class="q">
+<p>Does spoilage pressure ever make you want to push for one more stop when you know you should go home?</p>
+<p class="small">If ten runs go by and the answer is no, the design is dead and the weekend was a success.</p>
+</div>
+
+<section>
+<h2>Route planner</h2>
+<p class="note">Tap stops in order. A calculator for checking the design, not the game.</p>
+<div class="planner">
+  <div class="pick" id="pick"></div>
+  <div class="route" id="route"><span class="empty">Home — no stops selected</span></div>
+  <div class="readouts">
+    <div class="ro" id="ro-time"><div class="v">0</div><div class="k">hours</div></div>
+    <div class="ro" id="ro-fuel"><div class="v">0/22</div><div class="k">fuel</div></div>
+    <div class="ro" id="ro-cond"><div class="v">100</div><div class="k">cooler</div></div>
+    <div class="ro" id="ro-score"><div class="v">0</div><div class="k">best score</div></div>
+  </div>
+  <div id="manifest"></div>
+  <div style="margin-top:12px;font-size:13px">
+    <label style="cursor:pointer"><input type="checkbox" id="up-tank"> Larger tank (30)</label>
+    &nbsp; <label style="cursor:pointer"><input type="checkbox" id="up-cold"> Bigger cooler (9)</label>
+    &nbsp; <label style="cursor:pointer"><input type="checkbox" id="up-grade"> Better cooler (0.25/h)</label>
+  </div>
+</div>
+<div class="warn">Hold 20 bulk, cold 6 of it. Best score by stop count runs about 50, 88, 97, 99. Each extra stop is worth less while risk climbs. If you change stock, check that curve still flattens.</div>
+</section>
+
+<section>
+<h2>Reference</h2>
+<details open><summary>Items</summary>
+<div class="scroll"><table>
+<tr><th>Item</th><th class="n">Bulk</th><th class="n">Value</th><th class="n">Warm</th><th class="n">Cold</th></tr>
+<tr><td>Dry</td><td class="n">1</td><td class="n">2</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>Canned</td><td class="n">1</td><td class="n">3</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>Water</td><td class="n">3</td><td class="n">6</td><td class="n">—</td><td class="n">—</td></tr>
+<tr><td>Produce</td><td class="n">2</td><td class="n">8</td><td class="n">6h</td><td class="n">18h</td></tr>
+<tr><td>Dairy</td><td class="n">1</td><td class="n">5</td><td class="n">4h</td><td class="n">14h</td></tr>
+<tr><td>Meat</td><td class="n">2</td><td class="n">10</td><td class="n">3h</td><td class="n">12h</td></tr>
+<tr><td>Medical</td><td class="n">1</td><td class="n">8</td><td class="n">—</td><td class="n">10h</td></tr>
+</table></div>
+<p class="note">Dry, canned and water never spoil. Medical is cold only. Cold life has to sit near route length or spoilage never fires.</p>
+</details>
+
+<details><summary>Stock per location</summary>
+<table>
+<tr><th>Loc</th><th>Contents</th></tr>
+<tr><td>A</td><td>4 dry, 3 canned</td></tr>
+<tr><td>B</td><td>3 canned, 2 produce, 2 dry</td></tr>
+<tr><td>C</td><td>3 produce, 4 dairy, 1 water</td></tr>
+<tr><td>D</td><td>3 dairy, 2 meat, 2 canned</td></tr>
+<tr><td>E</td><td>3 meat, 3 medical, 2 dry</td></tr>
+<tr><td>F</td><td>4 medical, 3 meat, 2 canned</td></tr>
+</table>
+<p class="note">Limited stock is what forces a second stop. With unlimited take, one location fills the hold and the run is over.</p>
+</details>
+
+<details><summary>Distances</summary>
+<div class="scroll"><table>
+<tr><th></th><th class="n">H</th><th class="n">A</th><th class="n">B</th><th class="n">C</th><th class="n">D</th><th class="n">E</th><th class="n">F</th></tr>
+<tr><td>H</td><td class="n">0</td><td class="n">2</td><td class="n">3</td><td class="n">5</td><td class="n">6</td><td class="n">9</td><td class="n">12</td></tr>
+<tr><td>A</td><td class="n">2</td><td class="n">0</td><td class="n">2</td><td class="n">4</td><td class="n">7</td><td class="n">9</td><td class="n">13</td></tr>
+<tr><td>B</td><td class="n">3</td><td class="n">2</td><td class="n">0</td><td class="n">3</td><td class="n">5</td><td class="n">8</td><td class="n">11</td></tr>
+<tr><td>C</td><td class="n">5</td><td class="n">4</td><td class="n">3</td><td class="n">0</td><td class="n">3</td><td class="n">6</td><td class="n">9</td></tr>
+<tr><td>D</td><td class="n">6</td><td class="n">7</td><td class="n">5</td><td class="n">3</td><td class="n">0</td><td class="n">4</td><td class="n">7</td></tr>
+<tr><td>E</td><td class="n">9</td><td class="n">9</td><td class="n">8</td><td class="n">6</td><td class="n">4</td><td class="n">0</td><td class="n">4</td></tr>
+<tr><td>F</td><td class="n">12</td><td class="n">13</td><td class="n">11</td><td class="n">9</td><td class="n">7</td><td class="n">4</td><td class="n">0</td></tr>
+</table></div>
+<p class="note">Home to F and back is 24 hours on a 22 tank, so F is unreachable until you upgrade.</p>
+</details>
+
+<details><summary>Cooler, fuel, upgrades</summary>
+<p><strong>Cooler.</strong> Condition 0–100, starts at 100, drops 0.5 per travel hour. Cold life multiplies by condition/100. Below 25 the cooler is dead. Repair costs 4 hours and one Cooler Part, restores 30. Menu choice, no minigame.</p>
+<p><strong>Fuel.</strong> Tank 22, burns 1 per hour. Jerry Cans bulk 3, worth 10. Running dry ends the run at zero. Sell Jerry Cans at Home so fuel is a planning choice rather than a loot roll.</p>
+<p><strong>Upgrades.</strong> Score carries between runs. Three only: tank 22→30, cold 6→9, degrade 0.5→0.25.</p>
+</details>
+</section>
+
+<section><h2>Build order</h2><div id="checklist"></div></section>
+
+<section>
+<h2>Run log</h2>
+<p class="note">One line per run: the decision you actually hesitated over. Leave it blank if there wasn't one. Blanks are the finding.</p>
+<div id="log"></div>
+</section>
+
+<section>
+<h2>Not in this prototype</h2>
+<ul class="no">
+<li>Any 3D, any vehicle, any driving you perform</li>
+<li>A repair minigame of any kind</li>
+<li>Terrain, regions, world generation</li>
+<li>Combat, enemies, threats</li>
+<li>Engine parts or breakdowns beyond the cooler</li>
+<li>Crafting or cooking</li>
+<li>NPCs, story, setting, names</li>
+<li>Art of any kind</li>
+<li>Uncertainty about whether an item is really spoiled</li>
+</ul>
+</section>
+<footer class="site">Working documentation. Nothing here is final.</footer>
+</div>
+
+<script>
+const D={H:{H:0,A:2,B:3,C:5,D:6,E:9,F:12},A:{H:2,A:0,B:2,C:4,D:7,E:9,F:13},
+B:{H:3,A:2,B:0,C:3,D:5,E:8,F:11},C:{H:5,A:4,B:3,C:0,D:3,E:6,F:9},
+D:{H:6,A:7,B:5,C:3,D:0,E:4,F:7},E:{H:9,A:9,B:8,C:6,D:4,E:0,F:4},
+F:{H:12,A:13,B:11,C:9,D:7,E:4,F:0}};
+const LOCS=['A','B','C','D','E','F'];
+const IT={dry:{b:1,v:2,w:1e9,c:1e9},canned:{b:1,v:3,w:1e9,c:1e9},water:{b:3,v:6,w:1e9,c:1e9},
+produce:{b:2,v:8,w:6,c:18},dairy:{b:1,v:5,w:4,c:14},meat:{b:2,v:10,w:3,c:12},
+medical:{b:1,v:8,w:-1,c:10,coldOnly:true}};
+const STOCK={A:[['dry',4],['canned',3]],B:[['canned',3],['produce',2],['dry',2]],
+C:[['produce',3],['dairy',4],['water',1]],D:[['dairy',3],['meat',2],['canned',2]],
+E:[['meat',3],['medical',3],['dry',2]],F:[['medical',4],['meat',3],['canned',2]]};
+const HOLD=20;
+let route=[];
+const el=id=>document.getElementById(id);
+const up=()=>({tank:el('up-tank').checked?30:22,cold:el('up-cold').checked?9:6,deg:el('up-grade').checked?0.25:0.5});
+
+function buildPick(){
+  const p=el('pick');p.innerHTML='';
+  LOCS.forEach(L=>{const b=document.createElement('button');
+    b.textContent=L;b.disabled=route.includes(L);
+    b.onclick=()=>{route.push(L);render()};p.appendChild(b);});
+  const c=document.createElement('button');c.className='clear';c.textContent='clear';
+  c.onclick=()=>{route=[];render()};p.appendChild(c);
+}
+function knap(units,coldCap){
+  let dp=new Map([["0,0",0]]);
+  for(const u of units){const nd=new Map(dp);
+    for(const [k,val] of dp){const [a,c]=k.split(',').map(Number);
+      if(u.warm&&a+u.b<=HOLD){const K=(a+u.b)+","+c;if((nd.get(K)??-1)<val+u.v)nd.set(K,val+u.v);}
+      if(u.cold&&a+u.b<=HOLD&&c+u.b<=coldCap){const K=(a+u.b)+","+(c+u.b);if((nd.get(K)??-1)<val+u.v)nd.set(K,val+u.v);}}
+    dp=nd;}
+  return Math.max(...dp.values());
+}
+function render(){
+  buildPick();
+  const u=up(),pts=['H',...route,'H'];
+  let total=0;const legs=[];
+  for(let i=0;i<pts.length-1;i++){const d=D[pts[i]][pts[i+1]];legs.push(d);total+=d;}
+  const cond=Math.max(0,100-u.deg*total),mult=cond<25?0:cond/100;
+  el('route').innerHTML=route.length?pts.join(' \u2192 '):'<span class="empty">Home — no stops selected</span>';
+  const arr=[];let t=0;
+  for(let i=0;i<legs.length-1;i++){t+=legs[i];arr.push(t);}
+  const units=[],rows=[];
+  route.forEach((L,i)=>{const carry=total-arr[i];
+    STOCK[L].forEach(([name,n])=>{const it=IT[name];
+      const warm=!it.coldOnly&&carry<=it.w, cold=carry<=it.c*mult;
+      for(let k=0;k<n;k++)if(warm||cold)units.push({b:it.b,v:it.v,warm,cold});
+      rows.push({L,name,n,carry,warm,cold});});});
+  const score=route.length?knap(units,u.cold):0;
+  el('ro-time').querySelector('.v').textContent=total;
+  const f=el('ro-fuel');f.querySelector('.v').textContent=total+'/'+u.tank;
+  f.className='ro'+(total>u.tank?' bad':'');
+  const cr=el('ro-cond');cr.querySelector('.v').textContent=Math.round(cond);
+  cr.className='ro'+(cond<25?' bad':'');
+  el('ro-score').querySelector('.v').textContent=total>u.tank?'—':score;
+  el('ro-score').className='ro'+(total>u.tank?'':' good');
+  if(!route.length){el('manifest').innerHTML='';return;}
+  if(total>u.tank){el('manifest').innerHTML='<p class="note" style="color:var(--spoil)">Runs dry '+(total-u.tank)+'h short of home. Score is zero. Carry fuel or upgrade the tank.</p>';return;}
+  let h='<div class="scroll"><table><tr><th>Stop</th><th>Item</th><th class="n">Qty</th><th class="n">Carried</th><th>Arrives</th></tr>';
+  rows.forEach(r=>{let tag=r.warm?'<span class="tag t-warm">fine</span>':r.cold?'<span class="tag t-cold">cold only</span>':'<span class="tag t-gone">spoils</span>';
+    h+='<tr><td>'+r.L+'</td><td>'+r.name+'</td><td class="n">'+r.n+'</td><td class="n">'+r.carry+'h</td><td>'+tag+'</td></tr>';});
+  el('manifest').innerHTML=h+'</table></div>';
+}
+['up-tank','up-cold','up-grade'].forEach(id=>el(id).onchange=render);
+
+const PHASES=[
+ ['Saturday morning',['Item struct with bulk, value, warm life, cold life','Hold with two capacity pools','Clock','Spoilage check','Test: meat in warm storage, advance 4h, confirm spoiled']],
+ ['Saturday afternoon',['Locations with fixed stock','Distance table','Travel and take loop','Playable start to finish in the console']],
+ ['Saturday evening',['Play ten runs','Write down the numbers you would change']],
+ ['Sunday morning',['Change them','Add fuel, play a few','Add cooler condition, play a few','Add upgrades, play a few']],
+ ['Sunday afternoon',['Play ten more','Get two other people to play it']],
+ ['Sunday evening',['Write down the answer']]];
+const cl=el('checklist');
+PHASES.forEach((p,pi)=>{const d=document.createElement('div');d.className='phase';
+  d.innerHTML='<h3>'+p[0]+'</h3>';
+  p[1].forEach((task,ti)=>{const l=document.createElement('label');l.className='task';
+    l.innerHTML='<input type="checkbox" data-k="task'+pi+'_'+ti+'"><span>'+task+'</span>';
+    d.appendChild(l);});
+  cl.appendChild(d);});
+const lg=el('log');
+for(let i=1;i<=10;i++){const r=document.createElement('div');r.className='logrow';
+  r.innerHTML='<span class="num">'+i+'</span><input type="text" data-k="log'+i+'" placeholder="what did you hesitate over?"><input type="text" class="sc" data-k="score'+i+'" placeholder="pts">';
+  lg.appendChild(r);}
+
+document.querySelectorAll('[data-k]').forEach(f=>{
+  const k='salvage:'+f.dataset.k;
+  try{const v=localStorage.getItem(k);
+    if(v!==null){if(f.type==='checkbox')f.checked=v==='1';else f.value=v;}}catch(e){}
+  f.addEventListener(f.type==='checkbox'?'change':'input',()=>{
+    try{localStorage.setItem(k,f.type==='checkbox'?(f.checked?'1':'0'):f.value)}catch(e){}});
+});
+render();
+</script>
+</body></html>
