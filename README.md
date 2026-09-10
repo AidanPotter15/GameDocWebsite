@@ -14,21 +14,26 @@ It goes live a minute or two later at https://aidanpotter15.github.io/GameDocWeb
 
 ## Local preview
 
-Open `index.html` directly, or:
-
 ```
 python3 -m http.server 8000
 ```
 
+Then open http://localhost:8000. Use the server rather than opening the files
+directly. Pages live in folders now, so a `file://` link to `pitch/` gives you a
+directory listing instead of the page.
+
 ## Files
 
-| File | Purpose |
-|---|---|
-| `index.html` | Status board. The one table to keep updated. |
-| `pitch.html` | The one-page pitch, written to be posted for critique. |
-| `prototype.html` | Spec, route planner, build checklist, run log. |
-| `decisions.html` | What was decided and why. Read before re-arguing. |
-| `assets/site.css` | Shared styles for all pages. |
+| File | URL | Purpose |
+|---|---|---|
+| `index.html` | `/` | Status board. The one table to keep updated. |
+| `pitch/index.html` | `/pitch/` | The one-page pitch, written to be posted for critique. |
+| `prototype/index.html` | `/prototype/` | Spec, route planner, build checklist, run log. |
+| `decisions/index.html` | `/decisions/` | What was decided and why. Read before re-arguing. |
+| `assets/site.css` | | Shared styles for all pages. |
+
+Each page sits in its own folder as `index.html` so the URL has no `.html` on
+the end. Adding a page means adding a folder, not a file.
 
 ## A note on the checklist and run log
 

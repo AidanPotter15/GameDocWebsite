@@ -6,19 +6,21 @@ Solo game project. Currently at concept stage with a documentation site and an u
 
 Does spoilage pressure ever make the player want to push for one more stop when they know they should go home?
 
-Nothing gets built unless it helps answer this. If a proposed change doesn't, it belongs in `decisions.html` under "deliberately not built yet."
+Nothing gets built unless it helps answer this. If a proposed change doesn't, it belongs in `decisions/index.html` under "deliberately not built yet."
 
 ## What's in this repo
 
 | Path | Purpose |
 |---|---|
 | `index.html` | Status board. The one table kept current. |
-| `pitch.html` | One-page pitch, written to be posted for critique. |
-| `prototype.html` | Spec, interactive route planner, build checklist, run log. |
-| `decisions.html` | Every settled decision with its reason. |
+| `pitch/index.html` | One-page pitch, written to be posted for critique. |
+| `prototype/index.html` | Spec, interactive route planner, build checklist, run log. |
+| `decisions/index.html` | Every settled decision with its reason. |
 | `assets/site.css` | Shared styles. All pages link this. |
 
 Plain static HTML for GitHub Pages. No Jekyll, no build step, no dependencies. Don't add a framework or a bundler.
+
+Each page is an `index.html` inside its own folder, so URLs read `/pitch/` with no extension. A new page means a new folder. Links between pages are relative (`../decisions/`), which keeps the site working at both the project URL and the custom domain.
 
 ## The prototype (not yet written)
 
