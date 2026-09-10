@@ -21,7 +21,7 @@ an answer.
 
 ## The site
 
-https://aidanpotter15.github.io/GameDocWebsite/
+https://glitchhaven.online/
 
 | Page | What it holds |
 |---|---|
